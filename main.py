@@ -3,14 +3,10 @@ from secrets import bot_token
 import requests
 
 base_url = f'https://api.telegram.org'
+url_with_token = join_path(base_url, bot_token)
 
 
-@property
-def url_with_token() -> str:
-    return join_path(base_url, bot_token)
-
-
-def gather_media_ids(data, photo_ids, video_ids):
+def gather_media_ids(data, username, photo_ids, video_ids):
     for message in data['result']:
         message_username = message['message']['from']['username'].lower()
         if message_username == username and ('photo' in message['message']):
@@ -59,7 +55,7 @@ if __name__ == "__main__":
     photo_ids = []
     video_ids = []
 
-    gather_media_ids(parsed_response, photo_ids, video_ids)
+    gather_media_ids(parsed_response, username, photo_ids, video_ids)
 
     print(len(photo_ids), ' photos found!')
     print(len(video_ids), ' videos found!')
